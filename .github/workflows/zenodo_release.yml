@@ -1,0 +1,13 @@
+name: Zenodo Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  zenodo-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Upload to Zenodo (placeholder)
+        run: echo "Upload to Zenodo would be handled here."

@@ -1,0 +1,13 @@
+{
+  "title": "My Horizon Europe Data Project",
+  "upload_type": "dataset",
+  "description": "A FAIR-compliant research data management project.",
+  "creators": [
+    {"name": "Your Name", "affiliation": "Your Institution"}
+  ],
+  "communities": [
+    {"identifier": "your-community"}
+  ],
+  "keywords": ["FAIR", "RDM", "Cookiecutter", "Python"],
+  "license": "MIT"
+}

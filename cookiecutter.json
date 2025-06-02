@@ -1,0 +1,20 @@
+{
+  "project_name": "My Horizon Europe Data Project",
+  "project_slug": "my-horizon-europe-data-project",
+  "author_name": "Your Name",
+  "email": "your@email.com",
+  "github_organization": "your-org",
+  "zenodo_community_name": "your-community",
+  "include_github_actions": "yes",
+  "data_directory_name": "data",
+  "code_directory_name": "src",
+  "doc_directory_name": "docs",
+  "metadata_format": "json",
+  "naming_elements_choice": ["project_id", "experiment_name", "date", "version"],
+  "date_format_choice": "YYYY-MM-DD",
+  "separator_character_choice": "_",
+  "allowed_file_extensions_choice": ["csv", "json"],
+  "license": "MIT",
+  "python_version": "3.10",
+  "project_config_file_name": ".project_config.json"
+}
