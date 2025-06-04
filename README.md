@@ -37,21 +37,39 @@ FAIRy is a toolkit for FAIRification and quality control of data management, esp
 
 ### 4. Check Data Quality
 - Run the quality check script to validate your data against the data dictionary:
-  ```powershell
+  ```bash
   python src/checks/quality_check.py
   ```
   - This will report issues such as missing columns, type errors, invalid values, duplicates, and missing data.
 
-### 5. Prepare Zenodo Metadata
+### 5. (Advanced) Generate Great Expectations Suite from Data Dictionary
+- If you want to generate a Great Expectations suite from your data dictionary CSV, use:
+  ```bash
+  python src/utils/csv_to_ge_suite.py <data_dictionary.csv> <data_file.csv>
+  ```
+  - This will create a GE suite for advanced data validation workflows (optional).
+  - **Note:** The core FAIRy quality checks do not require Great Expectations and are tested independently for reliability.
+
+### 6. Prepare Zenodo Metadata
 - If you need to deposit your data in Zenodo, generate a metadata CSV (or use the template):
-  ```powershell
+  ```bash
   python src/utils/generate_zenodo_json.py input.csv .zenodo.json
   ```
   - If `input.csv` does not exist, a template will be created for you to fill in.
   - Edit the CSV, then rerun the command to generate `.zenodo.json`.
 
-### 6. Automate with GitHub Actions
+### 7. Automate with GitHub Actions
 - The provided workflows in `.github/workflows/` will automatically check naming conventions and data quality on every push or pull request.
+
+---
+
+## Testing and Development Notes
+- All core logic (including data dictionary parsing and quality checks) is tested with unit tests in `tests/`.
+- Tests for CSV-to-expectations logic are decoupled from Great Expectations and use pandas for robust, fast validation.
+- To run all tests:
+  ```bash
+  pytest
+  ```
 
 ---
 

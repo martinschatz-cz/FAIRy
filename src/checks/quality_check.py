@@ -109,8 +109,11 @@ def quality_check_tabular_data(data_dir: str, data_dictionary_path: str) -> Dict
                 nulls = [i for i, v in enumerate(values) if v in (None, '', col_meta.get('Missing Value Representation', ''))]
                 if nulls:
                     col_issues[col] = col_issues.get(col, []) + [f"Null/missing values at rows: {nulls}"]
-        if file_issues or col_issues:
-            report[fname] = {'file_issues': file_issues, 'column_issues': col_issues}
+        # Always add file_issues and column_issues to report, even if empty
+        report[fname] = {
+            'file_issues': file_issues,
+            'column_issues': col_issues
+        }
     return report
 
 if __name__ == '__main__':

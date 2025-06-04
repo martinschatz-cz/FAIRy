@@ -53,13 +53,23 @@ def csv_to_zenodo_json(csv_path: str, output_path: str) -> None:
         json.dump(zenodo_dict, f, indent=2)
     print(f"Zenodo JSON written to {output_path}")
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python generate_zenodo_json.py <input.csv> <output.json>")
-        sys.exit(1)
-    csv_path = sys.argv[1]
-    output_path = sys.argv[2]
-    if not os.path.exists(csv_path):
-        write_template_csv(csv_path)
+def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--template', action='store_true', help='Write template CSV and exit')
+    parser.add_argument('--csv', type=str, help='CSV file to convert to zenodo.json')
+    parser.add_argument('--out', type=str, help='Output zenodo.json path')
+    args = parser.parse_args()
+    if args.template:
+        write_template_csv('input.csv')
+        print('Template CSV created.')
         sys.exit(0)
-    csv_to_zenodo_json(csv_path, output_path)
+    if args.csv and args.out:
+        csv_to_zenodo_json(args.csv, args.out)
+        print(f'zenodo.json written to {args.out}')
+        sys.exit(0)
+    print('No action taken. Use --template or --csv/--out.')
+    sys.exit(1)
+
+if __name__ == "__main__":
+    main()
