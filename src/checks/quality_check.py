@@ -117,7 +117,35 @@ def quality_check_tabular_data(data_dir: str, data_dictionary_path: str) -> Dict
     return report
 
 if __name__ == '__main__':
-    # Example usage:
-    # report = quality_check_tabular_data('data', 'docs/data_dictionaries/data_dictionary.json')
-    # print(json.dumps(report, indent=2))
-    pass
+    import os
+    import sys
+    config_path = os.environ.get('FAIRY_CONFIG', '.project_config.json')
+    dict_path = os.environ.get('FAIRY_DD_OUT', 'docs/data_dictionaries/data_dictionary.json')
+    # Load config to get data directory
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
+    data_dir = config.get('data_directory_name', 'data')
+    report = quality_check_tabular_data(data_dir, dict_path)
+    any_errors = False
+    for fname, issues in report.items():
+        print(f'File: {fname}')
+        if 'error' in issues:
+            print('  ERROR:', issues['error'])
+            any_errors = True
+            continue
+        if issues['file_issues']:
+            for issue in issues['file_issues']:
+                print('  File issue:', issue)
+                any_errors = True
+        if issues['column_issues']:
+            for col, col_issues in issues['column_issues'].items():
+                for col_issue in col_issues:
+                    print(f'  Column {col}:', col_issue)
+                    any_errors = True
+        if not issues['file_issues'] and not issues['column_issues'] and 'error' not in issues:
+            print('  All checks passed.')
+    if not any_errors:
+        print('\nAll files passed all quality checks!')
+    else:
+        print('\nSome files have issues. See above.')
+    sys.exit(1 if any_errors else 0)

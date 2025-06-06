@@ -141,7 +141,7 @@ You can run all major FAIRy functions from the command line using the `fairy` co
 - `fairy --regex-builder` — Launch the interactive regex builder to customize your naming convention.
 - `fairy --check-naming` — Check all files in your data directory for naming convention compliance.
 - `fairy --generate-data-dictionary [--config <config.json>] [--out <output.json>]` — Generate or update the data dictionary. You can specify a custom config file and output path.
-- `fairy --quality-check` — Run the data quality check using your data dictionary.
+- `fairy --quality-check` — Run the data quality check using your data dictionary. This command prints a detailed, user-friendly report for each file and column. If all checks pass, it will print `All files passed all quality checks!` so you always know your data is fully compliant.
 - `fairy --zenodo-template` — Generate a Zenodo metadata CSV template (`input.csv`).
 - `fairy --zenodo-json --csv <input.csv> --out <output.json>` — Convert a metadata CSV to a Zenodo JSON file for upload.
 

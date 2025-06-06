@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import json
 
 def main():
     import sys
@@ -22,8 +23,47 @@ def main():
         subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), 'checks', 'generate_data_dictionary.py')], env=env)
         return
     if '--quality-check' in sys.argv:
-        subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), 'checks', 'quality_check.py')])
-        return
+        # Verbose: print results and always print a success message if all checks pass
+        config_path = os.environ.get('FAIRY_CONFIG', '.project_config.json')
+        dict_path = os.environ.get('FAIRY_DD_OUT', 'docs/data_dictionaries/data_dictionary.json')
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        data_dir = config.get('data_directory_name', 'data')
+        # Import using relative path so it works as a script or CLI
+        import importlib.util
+        import pathlib
+        qc_path = pathlib.Path(__file__).parent / 'checks' / 'quality_check.py'
+        spec = importlib.util.spec_from_file_location('quality_check', qc_path)
+        if spec and spec.loader:
+            qc = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(qc)
+            report = qc.quality_check_tabular_data(data_dir, dict_path)
+        else:
+            print('Could not load quality_check module.')
+            sys.exit(2)
+        any_errors = False
+        for fname, issues in report.items():
+            print(f'File: {fname}')
+            if 'error' in issues:
+                print('  ERROR:', issues['error'])
+                any_errors = True
+                continue
+            if issues['file_issues']:
+                for issue in issues['file_issues']:
+                    print('  File issue:', issue)
+                    any_errors = True
+            if issues['column_issues']:
+                for col, col_issues in issues['column_issues'].items():
+                    for col_issue in col_issues:
+                        print(f'  Column {col}:', col_issue)
+                        any_errors = True
+            if not issues['file_issues'] and not issues['column_issues'] and 'error' not in issues:
+                print('  All checks passed.')
+        if not any_errors:
+            print('\nAll files passed all quality checks!')
+        else:
+            print('\nSome files have issues. See above.')
+        sys.exit(1 if any_errors else 0)
     if '--zenodo-template' in sys.argv:
         subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), 'utils', 'generate_zenodo_json.py'), '--template'])
         return

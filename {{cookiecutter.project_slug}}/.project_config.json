@@ -10,12 +10,12 @@
   "code_directory_name": "{{ cookiecutter.code_directory_name }}",
   "doc_directory_name": "{{ cookiecutter.doc_directory_name }}",
   "metadata_format": "{{ cookiecutter.metadata_format }}",
-  "naming_elements_choice": {{ cookiecutter.naming_elements_choice }},
+  "naming_elements_choice": [{% for item in cookiecutter.naming_elements_choice %}"{{ item }}"{% if not loop.last %}, {% endif %}{% endfor %}],
   "date_format_choice": "{{ cookiecutter.date_format_choice }}",
   "separator_character_choice": "{{ cookiecutter.separator_character_choice }}",
   "license": "{{ cookiecutter.license }}",
   "python_version": "{{ cookiecutter.python_version }}",
   "project_config_file_name": "{{ cookiecutter.project_config_file_name }}",
-  "data_naming_convention_regex": "{{ cookiecutter.data_naming_convention_regex }}",
-  "allowed_file_extensions": {{ cookiecutter.allowed_file_extensions_choice }}
+  "data_naming_convention_regex": "^P[0-9]{2}_Exp[A-Z]{1}_[0-9]{4}-[0-9]{2}-[0-9]{2}\\.(csv|json)$",
+  "allowed_file_extensions": [{% for ext in cookiecutter.allowed_file_extensions_choice %}"{{ ext }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 }
