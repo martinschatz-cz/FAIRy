@@ -1,0 +1,21 @@
+{
+  "project_name": "{{ cookiecutter.project_name }}",
+  "project_slug": "{{ cookiecutter.project_slug }}",
+  "author_name": "{{ cookiecutter.author_name }}",
+  "email": "{{ cookiecutter.email }}",
+  "github_organization": "{{ cookiecutter.github_organization }}",
+  "zenodo_community_name": "{{ cookiecutter.zenodo_community_name }}",
+  "include_github_actions": "{{ cookiecutter.include_github_actions }}",
+  "data_directory_name": "{{ cookiecutter.data_directory_name }}",
+  "code_directory_name": "{{ cookiecutter.code_directory_name }}",
+  "doc_directory_name": "{{ cookiecutter.doc_directory_name }}",
+  "metadata_format": "{{ cookiecutter.metadata_format }}",
+  "naming_elements_choice": {{ cookiecutter.naming_elements_choice }},
+  "date_format_choice": "{{ cookiecutter.date_format_choice }}",
+  "separator_character_choice": "{{ cookiecutter.separator_character_choice }}",
+  "license": "{{ cookiecutter.license }}",
+  "python_version": "{{ cookiecutter.python_version }}",
+  "project_config_file_name": "{{ cookiecutter.project_config_file_name }}",
+  "data_naming_convention_regex": "{{ cookiecutter.data_naming_convention_regex }}",
+  "allowed_file_extensions": {{ cookiecutter.allowed_file_extensions_choice }}
+}

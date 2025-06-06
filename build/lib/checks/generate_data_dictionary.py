@@ -6,12 +6,12 @@ def load_config(config_path):
         return json.load(f)
 
 def main():
-    config = load_config(os.environ.get('FAIRY_CONFIG', '.project_config.json'))
+    config = load_config('.project_config.json')
     data_dir: str = config['data_directory_name']
     dictionary: dict[str, dict[str, object]] = {}
     # Load existing data dictionary if it exists
-    dict_path = os.environ.get('FAIRY_DD_OUT', 'docs/data_dictionaries/data_dictionary.json')
-    if os.path.exists(dict_path) and dict_path.endswith('.json'):
+    dict_path = 'docs/data_dictionaries/data_dictionary.json'
+    if os.path.exists(dict_path):
         with open(dict_path, 'r', encoding='utf-8') as f:
             dictionary = json.load(f)
     for root, _, files in os.walk(data_dir):
@@ -58,29 +58,9 @@ def main():
             if not columns:
                 # Fallback for non-CSV or unreadable files
                 dictionary[fname]["columns"] = []
-    # Auto-detect output format
-    if dict_path.endswith('.csv'):
-        # Write as CSV (one row per variable)
-        import csv
-        rows = []
-        for fname, meta in dictionary.items():
-            for col in meta["columns"]:
-                row = {"Filename": fname, **col}
-                rows.append(row)
-        if rows:
-            fieldnames = list(rows[0].keys())
-        else:
-            fieldnames = ["Filename", "Variable Name", "Description", "Data Type", "Units", "Allowed Values / Range", "Missing Value Representation", "Source", "Constraints / Validation Rules", "Notes / Comments", "Example Value"]
-        with open(dict_path, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            for row in rows:
-                writer.writerow(row)
-        print(f'Data dictionary generated at {dict_path} (CSV)')
-    else:
-        with open(dict_path, 'w', encoding='utf-8') as f:
-            json.dump(dictionary, f, indent=2)
-        print(f'Data dictionary generated at {dict_path} (JSON)')
+    with open(dict_path, 'w', encoding='utf-8') as f:
+        json.dump(dictionary, f, indent=2)
+    print('Data dictionary generated at docs/data_dictionaries/data_dictionary.json')
 
 # quality_check_tabular_data has been moved to src/checks/quality_check.py
 

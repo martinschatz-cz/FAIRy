@@ -27,6 +27,24 @@ FAIRy is a toolkit for FAIRification and quality control of data management, esp
   ```
   - Test filenames and update the regex as needed.
 
+## Using the Regex Builder via CLI
+
+You can launch the interactive regex builder at any time with:
+
+```bash
+fairy --regex-builder
+```
+
+This will run the regex builder script and allow you to customize your naming convention interactively. The changes will be saved to `.project_config.json`.
+
+Alternatively, you can still run it directly with:
+
+```bash
+python src/utils/regex_builder.py
+```
+
+---
+
 ### 3. Generate a Data Dictionary
 - Run the data dictionary generator to scan your data files and create a metadata-rich dictionary:
   ```powershell
@@ -60,6 +78,79 @@ FAIRy is a toolkit for FAIRification and quality control of data management, esp
 
 ### 7. Automate with GitHub Actions
 - The provided workflows in `.github/workflows/` will automatically check naming conventions and data quality on every push or pull request.
+
+---
+
+## Quick Project Scaffolding with Cookiecutter
+
+1. **Clone the FAIRy template repository:**
+   ```bash
+   git clone https://github.com/martinschatz-cz/FAIRy.git
+   cd FAIRy
+   ```
+
+2. **Run Cookiecutter from the template root:**
+   ```bash
+   cookiecutter .
+   ```
+   - Answer the prompts.
+   - Your new project will be created in a new folder.
+
+3. **Change into your new project folder and follow the README instructions.**
+
+---
+
+**Note:**
+- Do NOT run `cookiecutter .` from inside a generated project or a non-template folder.
+- The `fairy` CLI is for running FAIRy’s Python tools inside your generated project, not for project scaffolding.
+
+---
+
+## Using Cookiecutter to Start a New FAIRy Project
+
+You can use Cookiecutter to quickly scaffold a new FAIR-compliant research data management project using this template:
+
+1. **Install Cookiecutter** (if you haven't already):
+   ```bash
+   pip install cookiecutter
+   ```
+
+2. **Generate a new project** using this template:
+   - If you have this repository locally, run:
+     ```bash
+     cookiecutter .
+     ```
+     from the root of this repository.
+   - Or, use a remote repository (replace URL as needed):
+     ```bash
+     cookiecutter https://github.com/martinschatz-cz/FAIRy.git
+     ```
+
+3. **Answer the prompts** to configure your new project (project name, config file name, etc.).
+
+4. **Your new project** will be created in a new folder, with all the structure and scripts described below.
+
+5. **Follow the steps in the generated README** of your new project to set up naming conventions, generate data dictionaries, check data quality, and automate with GitHub Actions.
+
+---
+
+## FAIRy Command-Line Shortcuts
+
+You can run all major FAIRy functions from the command line using the `fairy` command with the following options:
+
+- `fairy --regex-builder` — Launch the interactive regex builder to customize your naming convention.
+- `fairy --check-naming` — Check all files in your data directory for naming convention compliance.
+- `fairy --generate-data-dictionary [--config <config.json>] [--out <output.json>]` — Generate or update the data dictionary. You can specify a custom config file and output path.
+- `fairy --quality-check` — Run the data quality check using your data dictionary.
+- `fairy --zenodo-template` — Generate a Zenodo metadata CSV template (`input.csv`).
+- `fairy --zenodo-json --csv <input.csv> --out <output.json>` — Convert a metadata CSV to a Zenodo JSON file for upload.
+
+These shortcuts make it easy to use FAIRy features without remembering long script paths. For example:
+
+```bash
+fairy --generate-data-dictionary --config myconfig.json --out mydict.json
+fairy --zenodo-json --csv input.csv --out .zenodo.json
+```
 
 ---
 
